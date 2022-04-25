@@ -1,0 +1,12 @@
+@three(): int{
+  v1: int = const 5;
+  ret v1;
+}
+
+@main{
+  v1: int = const 5;
+  v2: int = id v1;
+  v3: int = add v1 v2;
+  v4: int = call @three; 
+  print v3;
+}
