@@ -39,8 +39,4 @@ A chain of useless instructions that keep reassigning the same variable, followe
 
 ## chainingmult
 
-A chain of useless instructions using multiple instructions, followed by an actually useful chain of only necessary instructions.
-
-## chainingcomb
-
-A chain of half useless half useful instructions.
+A chain of only useful instructions (well, useful disregarding const prop)
