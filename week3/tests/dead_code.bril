@@ -1,0 +1,10 @@
+@main{
+  v1: int = const 123;
+  v2: int = const 1;
+  v5: int = const 4;
+  v5: int = const v2;
+  v5: int = const 1;
+  v5: int = add v5 v2;
+  v2: int = const 123;
+  print v5;
+}

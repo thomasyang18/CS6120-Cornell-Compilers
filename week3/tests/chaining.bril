@@ -1,0 +1,6 @@
+@main{
+  v: int = const 2;
+  v: int = const 3;
+  v: int = const 4;
+  print v;
+}
