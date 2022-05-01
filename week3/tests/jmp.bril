@@ -1,0 +1,16 @@
+@main(){
+  a: bool = const false;
+  b: bool = const true;
+  jmp .here;
+.here:
+  a: bool = const true;
+  a: bool = const false;
+  br a .there .there2;
+.there:
+  b: bool = const true;
+  jmp .end;
+.there2:
+  b: bool = const false;  
+.end:
+  print a;
+}

@@ -1,3 +1,10 @@
 @main(){
-		
+  v1: int = const 5;
+  v2: int = const 3;
+  v3: int = const 5;
+  v4: int = const 3;
+  v5: int = mul v1 v2;
+  v6: int = mul v3 v4;
+  v7: int = add v5 v6;
+  print v7; 		
 }
