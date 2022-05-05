@@ -40,9 +40,24 @@ Jump and break statements mixed in to make sure those are getting optimized prop
 
 #DCE Results
 
-ALl passed!
+ALl passed, with them optimizing away dead code where needed.
 
 # LVN Algorithm
 
+O(n^2): 
+
+First, make a bunch of passes through the algorithm, such that the first "layer" of a variable becomes "var0", the second layer becomes "var1", etc. Basically, rename to SSA form. A layer is defined as how many previous assignments to that variable came before it.
+
+Data Structure is an array of tuples. Whenever you encounter something of the form (dest) := (op) (args), you first try to match args to a previous variable (if not possible, because for example the variable exists outside of this basic block, then somehow have a dummy variable for "x=x" or something idk)
+
+Then, once args are matched, check if any existing value matches the dest. If so, then replace. If not, then put it in the table.
+
+Finally, to convert it back to normal, replace all instances of "var0" with just var and "varN" with just var, where N is the highest value you went to replacing for that variable.
+
 # LVN Tests
 
+I did constant folding, commutative, copy prop, and common subexpression elimination tests.
+
+I also did a jump during common subexpression elimination to see how my algorithm deals with undeclared variables (since operating on basic blocks, we're bound to have those).
+
+#LVN Results

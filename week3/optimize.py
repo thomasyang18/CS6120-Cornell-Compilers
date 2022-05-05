@@ -96,9 +96,24 @@ def DCE(body):
 
 	return body
 
+
 # Takes a function and does LVN on it 
 def LVN(body):
-	return body
+
+	def LVN_Block(body):
+		result = []
+		for instr in body:
+			if 'dest' not in instr:
+				continue
+			#assignment, so valid to optimize away
+		return body
+
+	temp_body = []
+	for block in form_blocks(body):
+		for instr in LVN_Block(body):
+			temp_body.append(instr)
+
+	return temp_body
 
 # Takes a program from standard input and optimizes it with DCE and LVN
 def optimize_blocks():
@@ -112,6 +127,7 @@ def optimize_blocks():
 			print("Before: ")
 			print(func['instrs'])
 	
+		func['instrs'] = DCE(func['instrs'])
 		func['instrs'] = LVN(func['instrs'])
 		func['instrs'] = DCE(func['instrs'])
 	
