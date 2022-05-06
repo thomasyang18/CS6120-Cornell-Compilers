@@ -1,6 +1,10 @@
+import re
 import json
 import sys
 import os
+import random
+import string
+from sortedcontainers import SortedDict
 
 TERMINATORS = 'jmp', 'br', 'ret'
 
@@ -101,16 +105,209 @@ def DCE(body):
 def LVN(body):
 
 	def LVN_Block(body):
-		result = []
+		#convert to ssa
+		ssa_map = {}
+		temp_body = []
+
+		rand_suf = "_temp_" + ''.join(random.choices(string.ascii_letters, k=5)) + '_'
+
 		for instr in body:
-			if 'dest' not in instr:
+			if 'args' in instr:
+				temp_args = []
+				for var in instr['args']:
+					if var not in ssa_map:
+						#If it wasn't declared yet, it comes from the outside so just do it like that
+						temp_args.append(var)
+					else:
+						temp_args.append(var + rand_suf + str(ssa_map[var]))
+				instr['args'] = temp_args
+
+			if 'dest' in instr:
+				var = instr['dest']
+				if var not in ssa_map:
+					ssa_map[var] = 0
+				else:
+					ssa_map[var] += 1
+				instr['dest'] = var + rand_suf + str(ssa_map[var])
+
+			temp_body.append(instr)		
+
+		body = temp_body
+		if DEBUG:
+			print("SSA MAP")
+			print(ssa_map)	
+	
+		#do actual LVN algorithm
+
+		temp_body = []
+		var_mapping = SortedDict() #mapping var -> (instruction, [...args])
+
+		for instr in body:
+			if 'dest' not in instr:	
+				#not an assignment
+				temp_body.append(instr)
 				continue
-			#assignment, so valid to optimize away
+			
+			print ("Current Mapping " + str(var_mapping))
+	
+			stuff = []
+			if 'args' in instr:
+				for arg in instr['args']:
+					if arg not in var_mapping:
+						#external var, so id map it
+						var_mapping[arg] = ('id', [arg])
+					
+					stuff.append(var_mapping[arg])			
+	
+			elif 'value' in instr:
+				#constant so just append
+				stuff.append(('const', instr['value']))
+
+			
+			if instr['op'] in ('add', 'mul', 'eq', 'and', 'or'):
+				stuff.sort()
+
+			value = (instr['op'], stuff)
+			
+			allConst = True
+
+			#print(value)
+
+			for val in stuff:
+				print(val)
+				allConst = allConst and (val[0] == 'const')
+
+			allConst = allConst and (instr['op'] in ('add', 'mul', 'sub', 'div', 'eq', 'lt', 'gt', 'le', 'ge', 'not', 'and', 'or'))
+
+			print("Yo " + str(allConst))
+
+			if allConst:
+				val = 0
+				#print(str(stuff[0][1]) + " " + str(stuff[1][1]))
+
+				if instr['op'] == 'add':
+					val = stuff[0][1] + stuff[1][1]
+				
+				if instr['op'] == 'mul':
+					val = stuff[0][1] * stuff[1][1]
+					
+				if instr['op'] ==  'sub':
+					val = stuff[0][1] - stuff[1][1]
+					
+				if instr['op'] ==  'div':
+					val = stuff[0][1] / stuff[1][1]
+
+				if instr['op'] ==  'eq':
+					val = stuff[0][1] == stuff[1][1]
+
+				if instr['op'] ==  'lt':
+					val = stuff[0][1] < stuff[1][1]
+
+				if instr['op'] ==  'gt':
+					val = stuff[0][1] > stuff[1][1]
+
+				if instr['op'] ==  'le':
+					val = stuff[0][1] <= stuff[1][1]
+
+				if instr['op'] ==  'ge':
+					val = stuff[0][1] >= stuff[1][1]
+
+				if instr['op'] ==  'not':
+					val = True if stuff[0][1] == 'false' else False
+
+				if instr['op'] ==  'and':
+					val = stuff[0][1] == stuff[1][1] and stuff[0][1] == 'true'
+
+				if instr['op'] ==  'or':
+					val = stuff[0][1] = 'true' or stuff[1][1] == 'true'
+						
+				if instr['type'] == 'int':
+					TODO = 3
+					#TODO: force twos complement
+
+				elif instr['type'] == 'bool':
+					val = 'true' if val else 'false'
+
+				print("# YOOO " + str(val))
+
+				instr = {
+					'op': 'const',
+					'type': instr['type'],
+					'value': val,
+					'dest': instr['dest']	
+				}
+			#check for readdings - allow function calls to be duplicated
+
+			if instr['op'] != 'call' and not allConst:
+				for key in var_mapping:
+					if value == var_mapping[key]:
+						# assign this, break
+						var_mapping[instr['dest']] = value
+
+						instr = {
+							'op' : 'id',
+							'args': [key],
+							'dest': instr['dest'],
+							'type': instr['type']
+						}
+						break
+
+			elif allConst:
+				var_mapping[instr['dest']] = value
+				
+			temp_body.append(instr)
+
+		body = temp_body
+
+		#convert back to normal, so that inputs/output variables are reflected normally
+		#all variables should end in _temp#, so can easily check numbers
+
+		temp_body = []
+
+		for instr in body:
+			if 'args' in instr:
+				temp_args = []
+				for var in instr['args']:
+		
+					search = re.search('(.*)' + rand_suf + '([0-9]+)$', var)
+					if not search: #so this is an external variable
+						temp_args.append(var)
+						continue
+
+					actual = search.group(1)
+					last = int(search.group(2))
+
+					if last == ssa_map[actual]:
+						#Extract something of the form [var]_temp[num]
+						temp_args.append(actual)
+					else:
+						temp_args.append(var)
+
+				instr['args'] = temp_args
+			if 'dest' in instr:
+				var = instr['dest']
+				search = re.search('(.*)' + rand_suf + '([0-9]+)$', var)
+				
+				if search:
+					actual = search.group(1)
+					last = int(search.group(2))
+					if last == ssa_map[actual]:
+						#Extract something of the form [var]_temp[num]
+						instr['dest'] = actual
+
+			temp_body.append(instr)
+
+		body = temp_body
+
+		if DEBUG:
+			print("LVN BODY")
+			print(body)
+
 		return body
 
 	temp_body = []
 	for block in form_blocks(body):
-		for instr in LVN_Block(body):
+		for instr in LVN_Block(block):
 			temp_body.append(instr)
 
 	return temp_body
@@ -127,9 +324,8 @@ def optimize_blocks():
 			print("Before: ")
 			print(func['instrs'])
 	
-		func['instrs'] = DCE(func['instrs'])
 		func['instrs'] = LVN(func['instrs'])
-		func['instrs'] = DCE(func['instrs'])
+		#func['instrs'] = DCE(func['instrs'])
 	
 		if DEBUG:
 			print("After :")

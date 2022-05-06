@@ -1,0 +1,8 @@
+@three(): int{
+  x: int = const 3;
+  ret x; 
+}
+@main(){
+  x: int = call @three;
+  print x;
+}

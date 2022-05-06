@@ -1,0 +1,10 @@
+@main{
+  x: int = const 3;
+  jmp .lbl;
+.lbl:
+  y: int = id x;
+  x: int = const 4;
+  z: int = const 3;
+  
+  print x;
+}

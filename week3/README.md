@@ -1,3 +1,7 @@
+# TODO
+
+The LVN SSA is up and running, jsut the LVN algorithm is not clean at all. 
+
 # What I did
 
 I ran the standard bril2json into brili pipe for a bunch of tests, and then tested passing them through optimize.py first. 
@@ -60,4 +64,4 @@ I did constant folding, commutative, copy prop, and common subexpression elimina
 
 I also did a jump during common subexpression elimination to see how my algorithm deals with undeclared variables (since operating on basic blocks, we're bound to have those).
 
-#LVN Results
+# LVN Results

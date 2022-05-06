@@ -1,0 +1,12 @@
+@main{
+  x: int = const 3;
+  y: int = const 1;
+  x: int = add x y;
+  x: int = add x y;
+  x: int = add x y;
+  x: int = add x y;
+  y: int = const 3;
+  sum: int = add x y;
+  print sum;
+}
+
