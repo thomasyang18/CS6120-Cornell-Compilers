@@ -1,1 +1,6 @@
-command = "bril2json < {filename} | python3 ../../lvn.py {args} | bril2txt"
+#command = "bash -c 'bril2json < {filename} | brili'"
+
+#command = "bash -c 'bril2json < {filename} | python3 ../optimize.py | brili {args}'"
+
+
+command = "bash -c 'bril2json < {filename} | python3 ../optimize.py | bril2txt'"

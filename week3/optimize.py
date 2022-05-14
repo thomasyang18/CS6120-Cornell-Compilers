@@ -347,7 +347,7 @@ def optimize_blocks():
 			print(func['instrs'])
 	
 		func['instrs'] = LVN(func['instrs'])
-		#func['instrs'] = DCE(func['instrs'])
+		func['instrs'] = DCE(func['instrs'])
 	
 		if DEBUG:
 			print("After :")

@@ -1,6 +1,6 @@
-# ARGS: -f
-
-@main(arg1: bool, arg2: bool) {
+@main() {
+  arg1: bool = const true;
+  arg2: bool = const false;
   t: bool = const true;
   f: bool = const false;
 

@@ -1,4 +1,4 @@
-# ARGS: -c
+# ARS: -c
 # (a + b) * (b + a)
 @main {
   a: int = const 4;
