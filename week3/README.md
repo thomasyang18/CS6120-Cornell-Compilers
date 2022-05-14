@@ -48,6 +48,8 @@ ALl passed, with them optimizing away dead code where needed.
 
 # LVN Algorithm
 
+(The LVN attempts in optimize.py were a disaster. Don't approach them lol). The actual one is in lvn.py
+
 O(n^2): 
 
 First, make a bunch of passes through the algorithm, such that the first "layer" of a variable becomes "var0", the second layer becomes "var1", etc. Basically, rename to SSA form. A layer is defined as how many previous assignments to that variable came before it.

@@ -4,11 +4,14 @@ import sys
 import os
 import random
 import string
-from sortedcontainers import SortedDict
+from lvn import LVN_Block
 
 TERMINATORS = 'jmp', 'br', 'ret'
 
 DEBUG = 'DEBUG' in os.environ and os.environ['DEBUG'] == 'True'
+
+
+COMM_OPS = 'add', 'mul', 'eq', 'and', 'or'
 
 def form_blocks(body):
 	cur_block = []
@@ -104,12 +107,17 @@ def DCE(body):
 # Takes a function and does LVN on it 
 def LVN(body):
 
-	def LVN_Block(body):
+	def noLVN_Block(body):
 		#convert to ssa
 		ssa_map = {}
 		temp_body = []
 
 		rand_suf = "_temp_" + ''.join(random.choices(string.ascii_letters, k=5)) + '_'
+		rand_suf = "_"
+
+		#stuff here to 
+		#value is denoted as a tuple (instr.op, instr['args'][0], [1]...)
+		
 
 		for instr in body:
 			if 'args' in instr:
@@ -140,121 +148,39 @@ def LVN(body):
 		#do actual LVN algorithm
 
 		temp_body = []
-		var_mapping = SortedDict() #mapping var -> (instruction, [...args])
+		table = []
+		var2num = {}
+                #value is denoted as a tuple (instr.op, instr['args'][0], [1]...)
 
 		for instr in body:
 			if 'dest' not in instr:	
 				#not an assignment
 				temp_body.append(instr)
 				continue
-			
-			print ("Current Mapping " + str(var_mapping))
-	
-			stuff = []
+
+			value = (instr['op'])
 			if 'args' in instr:
-				for arg in instr['args']:
-					if arg not in var_mapping:
-						#external var, so id map it
-						var_mapping[arg] = ('id', [arg])
-					
-					stuff.append(var_mapping[arg])			
-	
-			elif 'value' in instr:
-				#constant so just append
-				stuff.append(('const', instr['value']))
+
+				temp_args = [var2num[arg] for arg in instr['args']]
+
+				if instr['op'] in COMM_OPS:
+					temp_args.sort()
+
+				for arg in temp_args:
+					value += (arg)
+
+				instr['args'] = temp_args
 
 			
-			if instr['op'] in ('add', 'mul', 'eq', 'and', 'or'):
-				stuff.sort()
-
-			value = (instr['op'], stuff)
-			
-			allConst = True
-
-			#print(value)
-
-			for val in stuff:
-				print(val)
-				allConst = allConst and (val[0] == 'const')
-
-			allConst = allConst and (instr['op'] in ('add', 'mul', 'sub', 'div', 'eq', 'lt', 'gt', 'le', 'ge', 'not', 'and', 'or'))
-
-			print("Yo " + str(allConst))
-
-			if allConst:
-				val = 0
-				#print(str(stuff[0][1]) + " " + str(stuff[1][1]))
-
-				if instr['op'] == 'add':
-					val = stuff[0][1] + stuff[1][1]
-				
-				if instr['op'] == 'mul':
-					val = stuff[0][1] * stuff[1][1]
-					
-				if instr['op'] ==  'sub':
-					val = stuff[0][1] - stuff[1][1]
-					
-				if instr['op'] ==  'div':
-					val = stuff[0][1] / stuff[1][1]
-
-				if instr['op'] ==  'eq':
-					val = stuff[0][1] == stuff[1][1]
-
-				if instr['op'] ==  'lt':
-					val = stuff[0][1] < stuff[1][1]
-
-				if instr['op'] ==  'gt':
-					val = stuff[0][1] > stuff[1][1]
-
-				if instr['op'] ==  'le':
-					val = stuff[0][1] <= stuff[1][1]
-
-				if instr['op'] ==  'ge':
-					val = stuff[0][1] >= stuff[1][1]
-
-				if instr['op'] ==  'not':
-					val = True if stuff[0][1] == 'false' else False
-
-				if instr['op'] ==  'and':
-					val = stuff[0][1] == stuff[1][1] and stuff[0][1] == 'true'
-
-				if instr['op'] ==  'or':
-					val = stuff[0][1] = 'true' or stuff[1][1] == 'true'
+			#no constant folding for now
+			#no copy prop for now
+			#if value in var2num:
 						
-				if instr['type'] == 'int':
-					TODO = 3
-					#TODO: force twos complement
+			#else:
+						
+			print(instr)
+			print(value)
 
-				elif instr['type'] == 'bool':
-					val = 'true' if val else 'false'
-
-				print("# YOOO " + str(val))
-
-				instr = {
-					'op': 'const',
-					'type': instr['type'],
-					'value': val,
-					'dest': instr['dest']	
-				}
-			#check for readdings - allow function calls to be duplicated
-
-			if instr['op'] != 'call' and not allConst:
-				for key in var_mapping:
-					if value == var_mapping[key]:
-						# assign this, break
-						var_mapping[instr['dest']] = value
-
-						instr = {
-							'op' : 'id',
-							'args': [key],
-							'dest': instr['dest'],
-							'type': instr['type']
-						}
-						break
-
-			elif allConst:
-				var_mapping[instr['dest']] = value
-				
 			temp_body.append(instr)
 
 		body = temp_body
@@ -304,6 +230,102 @@ def LVN(body):
 			print(body)
 
 		return body
+
+
+	def no2LVN_Block(body):
+		table = [] #table is tuple of ((value tuple), "var name")
+		var2num = {}
+		temp_body = []
+		cnt_up = {}
+		
+		for j in range(len(body)):
+			instr = body[j]
+			value = (instr['op'],)
+			if 'args' in instr:
+				for arg in instr['args']:
+					#if it doesn't exist, add it on
+					for row in table:
+						if row[1] == arg:
+							break
+					else:
+						temp_instr = {}
+						temp_instr['op'] = 'none'
+						dest = ''
+
+						OverWrite = False
+						for k in range(j+1, len(body)):
+							instr2 = body[k]
+							if 'dest' in instr2 and instr2['dest'] == dest:
+								OverWrite = True
+								break
+
+						if OverWrite:
+							if dest not in cnt_up:
+								cnt_up[dest] = 2
+							else:
+								cnt_up[dest]=cnt_up[dest]+1
+
+							dest += '_' + str(cnt_up[dest])
+							arg = dest
+
+						var2num[arg] = len(table)
+						table.append((temp_instr, arg))
+						
+					value += (var2num[arg],)
+
+			num = len(table)
+			dest = ''
+		
+			if 'dest' in instr and instr['op'] not in SIDE_EFFECTS: #okay to optimize 
+
+				dest = instr['dest']
+
+				for i in range(len(table)):
+					row = table[i]
+					if row[0] == value: #instr = dest = id i
+						temp_instr = {}
+						temp_instr['dest'] = dest
+						temp_instr['op'] = 'id'
+						temp_instr['args'] = [i]
+						num = i
+						instr = temp_instr
+						break
+				else:
+					
+					OverWrite = False
+					for k in range(j+1, len(body)):
+						instr2 = body[k]
+						if 'dest' in instr2 and instr2['dest'] == dest:
+							OverWrite = True
+							break
+
+					if OverWrite:
+						if dest not in cnt_up:
+							cnt_up[dest] = 2
+						else:
+							cnt_up[dest]=cnt_up[dest]+1
+
+						dest += '_' + str(cnt_up[dest])
+						instr['dest'] = dest
+					else:
+						dest = instr['dest']
+					
+					table.append((value, dest))
+		
+			if 'args' in instr:
+				print(instr['args'])
+	
+			#convert from val form to variable form with table[num][1]
+			if 'args' in instr:
+				instr['args'] = [table[i][1] for i in instr['args']]
+
+			if 'dest' in instr and instr['op'] not in SIDE_EFFECTS:
+				var2num[dest] = num
+
+			temp_body.append(instr)
+
+		return temp_body
+
 
 	temp_body = []
 	for block in form_blocks(body):
