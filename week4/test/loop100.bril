@@ -1,0 +1,15 @@
+@main(){
+  one: int = const 1;
+  zero: int = const 0;
+  v100: int = const 100;
+  sum: int = const 0;
+.loop:
+  doJump: bool = eq zero v100;
+  br doJump .end .here;
+.here:
+  v100: int = sub v100 one;
+  sum: int = add sum one;
+  jmp .loop;
+.end:
+  print sum;
+}

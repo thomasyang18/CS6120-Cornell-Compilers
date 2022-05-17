@@ -1,0 +1,8 @@
+@main{
+  x: int = const 3;
+  y: int = const 4;
+  z1: int = div x y;
+  z2: int = div y x;
+  print z1;
+  print z2;
+}
