@@ -11,7 +11,7 @@ I'm not entirely sure how the lattice theory thing works. My first impressions w
 
 I'm going to try and write a proof of the constant propogation here, and then try to generalize it later.
 
-```
+```math
 \sqrt{n}
 
 ```
