@@ -1,0 +1,4 @@
+@main(v1: bool){
+  v2: bool = const true;
+  v3: bool = or v2 v1;
+}

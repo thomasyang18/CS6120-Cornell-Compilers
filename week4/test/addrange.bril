@@ -1,0 +1,25 @@
+@main(choose: bool){
+  v1: int = const 6;
+  br choose .a .b;
+.a:
+  v1: int = const 9;
+  jmp .end;
+.b:
+  v1: int = const 3;
+  jmp .end;
+.end:
+  v2: int = const 10;
+  br choose .a1 .b1;
+.a1:
+  v2: int = const 11;
+  jmp .end1;
+.b1: 
+  v2: int = const 7;
+  jmp .end1;
+.end1:
+  addval: int = add v1 v2;
+  mulval: int = mul v1 v2;
+  subval: int = sub v1 v2;
+  divval: int = div v1 v2;
+}
+

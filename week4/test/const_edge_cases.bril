@@ -1,0 +1,15 @@
+@main(tbool: bool, tint: int){
+  zero: int = const 0;
+  truth: bool = const true;
+  lie: bool = const false;
+  maxint: int = const 9223372036854775807;
+  minint: int = const -9223372036854775808;
+  v1: int = mul zero tint;
+  v2: int = div zero tint;
+  v3: int = div tint zero;
+  b1: bool = lt maxint zero;
+  b2: bool = lt zero minint;
+  #etc etc im sure if one works they all work
+  b3: bool = and lie tbool;
+  b4: bool = or truth tbool; 
+}

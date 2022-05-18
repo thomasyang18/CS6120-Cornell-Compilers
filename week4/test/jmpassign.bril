@@ -1,0 +1,12 @@
+@main(choose: bool){
+  v1: int = const 6;
+  br choose .a .b;
+.a:
+  v1: int = const 9;
+  jmp .end;
+.b:
+  v1: int = const 3;
+  jmp .end;
+.end:
+  print v1;
+}

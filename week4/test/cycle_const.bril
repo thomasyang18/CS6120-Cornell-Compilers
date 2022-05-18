@@ -1,0 +1,7 @@
+@main(){
+.lbl:
+  v1: int = const 300;
+.lbl2:
+  v1: int = const 200;
+  jmp .lbl;
+}

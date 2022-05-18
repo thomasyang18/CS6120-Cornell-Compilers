@@ -13,7 +13,7 @@ def parse_args():
                     help='Set the Data Flow Analysis Type',    
                     default='const', 
                     type=str, 
-                    choices = ['const', 'live', 'init', 'range'])
+                    choices = ['const', 'live', 'range'])
 
     return vars(parser.parse_args())
 
@@ -38,11 +38,7 @@ if __name__ == "__main__":
         w_id = id
         w_merge = merge
         w_transfer = transfer
-    if args['type'] == 'init':
-        from init_var_lib import id, merge, transfer
-        w_id = id
-        w_merge = merge
-        w_transfer = transfer
+        dir = 'backward'
     if args['type'] == 'range':
         from range_var_lib import id, merge, transfer
         w_id = id

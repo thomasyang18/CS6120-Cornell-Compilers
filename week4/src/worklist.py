@@ -53,7 +53,7 @@ def make_graph(func):
                 add_edge(i, label_to_ind[instr['labels'][0]])
                 add_edge(i, label_to_ind[instr['labels'][1]])
 
-        elif instr['op'] not in TERMINATORS and i != len(blocks)-1:
+        elif 'op' in instr and instr['op'] not in TERMINATORS and i != len(blocks)-1:
             add_edge(i,i+1)
 
     return name, args, blocks, succ, pred
@@ -81,7 +81,7 @@ def worklist_algo(func, id, merge, transfer, dir = 'forward'):
         out_set.append({})
 
     for arg in in_args:
-        in_set[0][arg['name']] = id()
+        in_set[0][arg['name']] = id(arg.copy())
 
     if dir != 'forward':
         #flip predecessors and successors, flip in and out sets
@@ -93,6 +93,7 @@ def worklist_algo(func, id, merge, transfer, dir = 'forward'):
         # b = pick any block from worklist
         b = worklist[-1]
         worklist.pop()
+        #print(b)
         # in[b] = merge(out[p] for every predecessor p of b)
         for p in pred[b]:
             merge(in_set[b], out_set[p].copy())
@@ -106,18 +107,27 @@ def worklist_algo(func, id, merge, transfer, dir = 'forward'):
             for node in succ[b]:
                 worklist.append(node)
 
-    print ("===================OPERATION ON FUNCTION [" + name + "]===================")
+    print ("=================== FUNCTION [" + name + "] (" + str(dir) + ")===================")
+
+    if dir != 'forward':
+        in_set, out_set = out_set, in_set
 
     for i in range(0, len(blocks)):
-        print ("Current block:")
-        for instr in blocks[i]:
-            print(instr)
-        print("------------------")
-        print ("In nodes:")
-        for var in in_set[i]:
-            print(var + " " + str(in_set[i][var]))
-        print("------------------")
-        print ("Out nodes:")
-        for var in out_set[i]:
-            print(var + " " + str(out_set[i][var]))
-        print("+++++++++++++++++")
+        print ("b" + str(i) + ":")
+        #for instr in blocks[i]:
+        #    print(instr)
+        if len(in_set[i]) == 0:
+            print("  in: Ø")
+        else:
+            print ("  in:")
+            for var in in_set[i]:
+                print("    " + var + " " + str(in_set[i][var]))
+        
+        if len(out_set[i]) == 0:
+            print("  out: Ø")
+        else:
+            print ("  out:")
+            for var in out_set[i]:
+                print("    " + var + " " + str(out_set[i][var]))
+
+        

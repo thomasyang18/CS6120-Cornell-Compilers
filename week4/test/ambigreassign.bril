@@ -1,0 +1,6 @@
+@main(int: v1){
+  v0: int = id v1;
+  jmp .here;
+.here:  
+  v1: int = const 0;
+}
