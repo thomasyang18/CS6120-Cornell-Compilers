@@ -1,0 +1,7 @@
+@main(){
+.loop1:
+   v1: int = const 3;
+.loop:
+   v1: int = const 4;
+   jmp .loop1;
+}

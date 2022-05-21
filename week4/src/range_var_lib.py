@@ -1,6 +1,7 @@
 import sys
 max_int = sys.maxsize
 min_int = -sys.maxsize-1
+inf = (min_int, max_int)
 
 def evaluate_expr(op, args):
     # Can be assured that all operations are valid, or if invalid, only invalid because '?' value or div by zero error or someth
@@ -35,7 +36,7 @@ def evaluate_expr(op, args):
             if True in args:
                 return True
 
-        return '?'
+        return inf
         
 #TODO: rest of this
 
@@ -43,7 +44,6 @@ def evaluate_expr(op, args):
     def in_range(x):
         return x >= min_int and x <= max_int
 
-    inf = (min_int, max_int)
 
     if op == 'mul':
         tlist = []
@@ -58,7 +58,7 @@ def evaluate_expr(op, args):
 
     if op == 'div':
         if args[1][0] <= 0 <= args[1][1]:
-            return '?'
+            return inf
 
         tlist = []
         for i in range(0,2):
@@ -107,7 +107,7 @@ def id(arg):
     if arg['type'] == 'bool':
         return '?'
     if arg['type'] == 'int':
-        return (min_int, max_int)
+        return '?'
     return None
 
 def merge(in_set, apply_set):
@@ -115,10 +115,13 @@ def merge(in_set, apply_set):
         if arg not in in_set:
             in_set[arg] = apply_set[arg]
         
+        #print("yo ", arg, in_set[arg])
+
         if in_set[arg] == '?' or in_set[arg] is True or in_set[arg] is False:
             continue
 
         in_set[arg] = (min(in_set[arg][0], apply_set[arg][0]), max(in_set[arg][1], apply_set[arg][1]))
+
 
         if in_set[arg][0] > in_set[arg][1]:
             in_set[arg] = '?'

@@ -76,7 +76,7 @@ def merge(in_set, apply_set):
         if arg not in in_set:
             in_set[arg] = apply_set[arg]
         elif in_set[arg] != apply_set[arg]:
-            in_set[arg] = id()
+            in_set[arg] = id(arg)
 
 def transfer(instrs, in_set):
     for instr in instrs:

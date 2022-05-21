@@ -1,0 +1,15 @@
+@main(){
+.start:
+  v1: int = const 3;
+  b: bool = const false;
+  br b .a .c;
+.a: 
+  v1: int = const 2;
+  jmp .end;
+.c: 
+  v1: int = const 4;
+  jmp .end;
+.end:
+  v1: int = const 100;
+  jmp .start;
+}

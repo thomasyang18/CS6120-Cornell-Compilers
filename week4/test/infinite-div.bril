@@ -1,0 +1,18 @@
+@main(b: bool){
+  v1: int = const 300;
+  br b .c1 .c2;
+.c1:
+  v1: int = const 494994;
+  jmp .end;
+.c2: 
+  v1: int = const 193913;
+  jmp .end;
+.end:
+  
+  two: int = const 2;
+  v1: int = div v1 two;
+  br b .end .end2;
+
+.end2:
+  
+}
