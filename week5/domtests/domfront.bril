@@ -1,0 +1,14 @@
+# This CFG is designed such that the end node should be in the dominance frontier of .b1a and .b1b
+
+@main(x: bool){
+  br x .b1a .b1b;
+.b1a:
+  jmp .b2a;
+.b2a:
+  jmp .end;
+.b1b:
+  jmp .b2b;
+.b2b:
+  jmp .end;
+.end:
+}

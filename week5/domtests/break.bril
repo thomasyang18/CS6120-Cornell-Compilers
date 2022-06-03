@@ -1,0 +1,12 @@
+@main(x: bool){
+.b0:
+  br x .b1a .b1b;
+.b1a:
+  jmp .b2;
+.b1b:
+  jmp .b2;
+.b2:
+  jmp .b3;
+.b3:
+  v1: int = const 2;
+}

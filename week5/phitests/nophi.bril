@@ -1,0 +1,12 @@
+@main(x: bool){
+  br x .a .b;
+.a:
+  y1: int = const 4;
+  jmp .end;
+.b:
+  y2: int = const 4;
+  jmp .end;
+.end:
+#  y = phi .a y1 .b y2;
+  print y;
+}
