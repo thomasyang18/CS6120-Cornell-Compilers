@@ -1,1 +1,1 @@
-command = "bash -c 'bril2json < {filename} | python3 ../src/domsrc/domutil.py -p yes --myway no --type all'"
+command = "bash -c 'bril2json < {filename} | python3 ../src/domutil.py -p yes --myway no --type all'"

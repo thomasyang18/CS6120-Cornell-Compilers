@@ -128,6 +128,8 @@ def find_dominators_my_way(func, print_cfg, printop):
                 changed = True
                 dom[v] = temp
     
+    dom_validators.does_dominance_hold(dom, succ)
+
     if printop:
         print ("-------------------Finding Dominators -------------------------")
         for i in range(0, len(blocks)):
@@ -181,6 +183,8 @@ def find_dominators(func, print_cfg, printop):
             if dom[v] != temp:
                 changed = True
                 dom[v] = temp
+
+    dom_validators.does_dominance_hold(dom, succ)
 
     if printop:    
         print ("-------------------Finding Dominators -------------------------")
