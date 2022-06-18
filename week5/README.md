@@ -45,3 +45,21 @@ The algorithm was to process each node in increasing dominator size, and set the
 ## Domination Frontier
 
 This one I sort of just analyzed and went with it. I mean, I did no fancy algorithm - just a brute force O(n^3) algorithm to check. If something's wrong with this, it's just a small typo or one of the previous things was wrong (which would most likely be the dominators function, which I tested thoroughly). I guess this will be reflected in the SSA
+
+## To-SSA Algorithm
+
+```
+
+var2phi = map of variable -> set of blocks
+# don't worry about edge case where there's phi nodes already
+
+for v in vars:
+  i = 0
+  while i < len(defs[v]):
+    for block in DF[defs[v][i]]: #dominance frontier
+      var2phi[var].add(block)
+      if block not in defs[v]:
+        defs[v].append(block)
+
+```
+

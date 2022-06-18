@@ -10,97 +10,87 @@ from domlib import make_graph
 import json
 
 def to_ssa(func):
-    dominators = find_dominators(func, True, False)
+    dominators = find_dominators(func, False, False)
     tree = build_tree(dominators, False)
     frontier = build_frontier(func, tree, dominators, False)
     name, args, blocks, succ, pred = make_graph(func)    
-
-    var2blocks = {}
-    var2phiblocks = {}
-
-    label2ind = {}
-    for i in range(0, len(blocks)):
-        if 'label' in blocks[i][0]:
-            label2ind[blocks[i][0]['label']] = i
     
-    phi_node_inc = []
-    for i in range(0, len(blocks)):
-        phi_node_inc.append(set())
+    vars = set()
+
+    defs = {} # map of variables to list of blocks
 
     for i in range(0, len(blocks)):
-        #print(blocks[i])
         for instr in blocks[i]:
             if 'dest' in instr:
-                if instr['dest'] not in var2blocks:
-                    var2blocks[instr['dest']] = set()
-                    var2phiblocks[instr['dest']] = set()
-                var2blocks[instr['dest']].add(i)
-                if instr['op'] == 'phi':
-                    var2phiblocks[instr['dest']].add(i)
-                    for label in instr['labels']:
-                        phi_node_inc[i].add(label2ind[label])
+                v= instr['dest']
+                vars.add(v)
+                
+                if v not in defs:
+                    defs[v] = []
+                if i not in defs[v]:
+                    defs[v].append(i) 
+        
+    for v in vars:
+        i = 0
+        has_phi = set()
+        while i < len(defs[v]):
+            for block in frontier[defs[v][i]]:
+                #inefficient to add 1 by 1 but whatever                
+                has_phi.add(block)
 
-    for v in var2blocks: # v = string, defs = set of ints (blocks)
-        while True:
-            to_upd = set()
-            for d in var2blocks[v]: # d = int of blocks
-                for block in frontier[d]: # block = int of block
-                    #add node to phi block
-                    phi_node_inc[block].add(d)
-                    var2phiblocks[v].add(block)
-                    if block not in var2blocks[v]:
-                        to_upd.add(block)
-            if len(to_upd) == 0:
-                break
-            for block in to_upd:
-                var2blocks[v].add(block)
+                if block not in defs[v]:
+                    defs[v].append(block)
+            i+=1
 
+        for block in has_phi:
+            blocks[block] = 
 
-    phiblocks2var = {}
-    for i in range(0, len(block)):
-        phiblocks2var[i] = {}
-
-    stack_cnt = {}
     stack = {}
-    for v in var2phiblocks:
-        stack[v] = [v + "0"]
-        stack_cnt[v] = 1
-        for block in var2blocks[v]:
-            phiblocks2var[block].add(v)
+    for v in var2phi:
+        stack[v] = [0]
+
+    # insert phi nodes before each block for each variable, assuming 
+    # that the block has more th
     
+
     def rename(i):
         block = blocks[i]
-        for instr in block:
+        go_back = {}
+        for v in stack:
+            go_back[v] = stack[v][-1]
+
+        for j in range(0,len(block)):
+            instr = block[j]
+
             if 'args' in instr:
-                for arg in instr['arg']:
-                    instr['arg'][arg] = stack[arg][-1]
-
+                instr['args'] = [stack[v][-1] if v in stack else v for v in instr['args'] ] 
             if 'dest' in instr:
-                cur = instr['dest']
-                stack_cnt[cur]+=1
-                stack[cur].append(cur + stack_cnt[cur])
-                instr['dest'] = stack[cur][-1]
+                v = instr['dest']
+                stack[v].append(stack[v][-1]+1)
+                instr['dest'] = stack[v][-1]
+            
+        # this make the phi nodes read from w/e, will be a bit inefficient
+        # in this
+        # need to somehow track and modify phi nodes this is annoying!!!!
 
-            for s in succ[i]:
-                for p in phiblocks2var[s]:
-                    
+        for s in succ[i]:
+                
+
+        for b in tree[i]:
+            rename(b)
+
+        for v in go_back:
+            while stack[v][-1] != go_back[v]:
+                stack[v].pop()    
+            
+
     rename(0)
-
-    func['instrs'].clear()
-    for block in blocks:
-        for instr in block:
-            func['instrs'].append(instr)
-
-    return func
-
-def phi(func):
-    return func
 
 if __name__ == "__main__":
     prog = json.load(sys.stdin)
 
     for func in prog['functions']:
         func = to_ssa(func)
-        func = phi(func)
+        #func = out_of_ssa(func)
 
     json.dump(prog, sys.stdout, indent=2)
