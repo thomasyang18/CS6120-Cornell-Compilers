@@ -63,3 +63,36 @@ for v in vars:
 
 ```
 
+## Reflection
+
+I didn't realize that "defined" didn't just mean the variable was defined, but more like live variable analysis kinda deal, where variables carried over through paths still applied.
+
+So for this graph:
+
+0->1 
+1->2
+2->1
+1->3
+
+, I got a domination frontier of {}, {}, {1}, {} respectively for 0-3. But a variable that was declared in 0 wouldn't carry over into the dominaition frontier for the phi node.
+
+This is the program that broke my code:
+
+```
+@main(){
+.b0:
+  i: int = const 0;
+  n: int = const 10;
+  one: int = const 1;
+.b1:
+  i: int = add i one;
+  cond: bool = ge i n;
+  br cond .b3 .b2;
+.b2:
+  print i;
+  jmp .b1;
+.b3:
+}
+
+
+```

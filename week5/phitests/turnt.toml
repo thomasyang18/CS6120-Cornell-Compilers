@@ -1,0 +1,2 @@
+command = "bash -c 'bril2json < {filename} | python3 ../src/to_ssa.py | bril2txt'"
+ 

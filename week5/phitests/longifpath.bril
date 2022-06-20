@@ -1,0 +1,15 @@
+@main(){
+.b0:
+  cond: bool = const true;
+  br cond .b1 .b3;
+.b1:
+  x: int = const 3;
+.b2:
+  jmp .b5;
+.b3:
+  y: int = const 3;
+.b4:
+
+.b5:
+  
+}

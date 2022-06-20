@@ -1,0 +1,119 @@
+@printUnmarked(table: ptr<bool>, tableSize: int) {
+  .bbloc0:
+    idx.1: int = const 0;
+    zero.1: int = const 0;
+    one.1: int = const 1;
+  .print.unmarked.for.cond:
+    idx.2 = phi idx.1 idx.3 .bbloc0 .print.unmarked.skip.print;
+    one.2 = phi one.1 one.3 .bbloc0 .print.unmarked.skip.print;
+    offsetTable.1 = phi offsetTable.0 offsetTable.2 .bbloc0 .print.unmarked.skip.print;
+    marked.1 = phi marked.0 marked.2 .bbloc0 .print.unmarked.skip.print;
+    continue.1: bool = lt idx.2 tableSize;
+    br continue.1 .print.unmarked.for.body .print.unmarked.for.end;
+  .print.unmarked.for.body:
+    offsetTable.2: ptr<bool> = ptradd table idx.2;
+    marked.2: bool = load offsetTable.2;
+    br marked.2 .print.unmarked.skip.print .print.unmarked.print;
+  .print.unmarked.print:
+    print idx.2;
+  .print.unmarked.skip.print:
+    one.3: int = const 1;
+    idx.3: int = add idx.2 one.3;
+    jmp .print.unmarked.for.cond;
+  .print.unmarked.for.end:
+    ret;
+  }
+  @findNextP(table: ptr<bool>, tableSize: int, currentP: int): int {
+  .bbloc0:
+    print tableSize;
+    zero.1: int = const 0;
+    one.1: int = const 1;
+    p.1: int = id currentP;
+  .find.next.p.continue:
+    marked.1 = phi marked.0 marked.2 .bbloc0 .find.next.p.in.bounds;
+    offsetTable.1 = phi offsetTable.0 offsetTable.2 .bbloc0 .find.next.p.in.bounds;
+    p.2: int = add p.1 one.1;
+    inBounds.1: bool = lt p.2 tableSize;
+    br inBounds.1 .find.next.p.in.bounds .find.next.p.not.in.bounds;
+  .find.next.p.in.bounds:
+    offsetTable.2: ptr<bool> = ptradd table p.2;
+    marked.2: bool = load offsetTable.2;
+    br marked.2 .find.next.p.continue .find.next.p.done;
+  .find.next.p.done:
+    ret p.2;
+  .find.next.p.not.in.bounds:
+    ret zero.1;
+  }
+  @markMultiples(table: ptr<bool>, tableSize: int, p: int) {
+  .bbloc0:
+    print p;
+    adfaf.1: int = const -1;
+    print adfaf.1;
+    zero.1: int = const 0;
+    one.1: int = const 1;
+    t.1: bool = const true;
+    m.1: int = const 1;
+  .mark.multiples.continue:
+    adfaf2.1: int = const -2;
+    print adfaf2.1;
+    m.2: int = add m.1 one.1;
+    mTimesP.1: int = mul m.2 p;
+    print mTimesP.1;
+    print m.2;
+    print p;
+    offsetTable.1: ptr<bool> = ptradd table mTimesP.1;
+    finished.1: bool = ge mTimesP.1 tableSize;
+    br finished.1 .mark.multiples.done .mark.multiples.store;
+  .mark.multiples.store:
+    store offsetTable.1 t.1;
+    jmp .mark.multiples.continue;
+  .mark.multiples.done:
+    print adfaf.1;
+    ret;
+  }
+  @populateTable(table: ptr<bool>, tableSize: int) {
+  .bbloc0:
+    zero.1: int = const 0;
+    one.1: int = const 1;
+    two.1: int = const 2;
+    f.1: bool = const false;
+    t.1: bool = const true;
+    store table t.1;
+    offsetTable.1: ptr<bool> = ptradd table one.1;
+    store offsetTable.1 t.1;
+    idx.1: int = id two.1;
+  .populate.table.for.cond:
+    idx.2 = phi idx.1 idx.3 .bbloc0 .populate.table.for.body;
+    offsetTable.2 = phi offsetTable.1 offsetTable.3 .bbloc0 .populate.table.for.body;
+    continue.1: bool = lt idx.2 tableSize;
+    br continue.1 .populate.table.for.body .populate.table.for.end;
+  .populate.table.for.body:
+    offsetTable.3: ptr<bool> = ptradd table idx.2;
+    store offsetTable.3 f.1;
+    idx.3: int = add idx.2 one.1;
+    jmp .populate.table.for.cond;
+  .populate.table.for.end:
+    ret;
+  }
+  @printPrimesUpTo(n: int) {
+  .bbloc0:
+    zero.1: int = const 0;
+    two.1: int = const 2;
+    table.1: ptr<bool> = alloc n;
+    call @populateTable table.1 n;
+    p.1: int = id two.1;
+  .print.primes.up.to.continue:
+    call @markMultiples table.1 n p.1;
+    p.2: int = call @findNextP table.1 n p.1;
+    finished.1: bool = eq p.2 zero.1;
+    br finished.1 .print.primes.up.to.done .print.primes.up.to.continue;
+  .print.primes.up.to.done:
+    call @printUnmarked table.1 n;
+    free table.1;
+  }
+  @main(input: int) {
+  .bbloc0:
+    print input;
+    call @printPrimesUpTo input;
+  }
+  

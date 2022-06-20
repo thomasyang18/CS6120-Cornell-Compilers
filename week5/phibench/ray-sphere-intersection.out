@@ -1,0 +1,21 @@
+==============Operating on function RaySphereIntersection =========================
+-------------------Finding Dominators -------------------------
+b0 : {0}
+-------------------Finding Tree -------------------------
+0 : []
+---------------Finding Domination Frontier----------------
+0 : set()
+==============Operating on function DotProduct =========================
+-------------------Finding Dominators -------------------------
+b0 : {0}
+-------------------Finding Tree -------------------------
+0 : []
+---------------Finding Domination Frontier----------------
+0 : set()
+==============Operating on function main =========================
+-------------------Finding Dominators -------------------------
+b0 : {0}
+-------------------Finding Tree -------------------------
+0 : []
+---------------Finding Domination Frontier----------------
+0 : set()

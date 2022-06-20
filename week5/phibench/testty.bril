@@ -1,0 +1,6 @@
+@main(){
+ x: int = const 3;
+ print x;
+.here:
+ jmp .here;
+}

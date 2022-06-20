@@ -1,0 +1,76 @@
+{
+  "functions": [
+    {
+      "args": [
+        {
+          "name": "x",
+          "type": "bool"
+        }
+      ],
+      "instrs": [
+        {
+          "args": [
+            "x"
+          ],
+          "labels": [
+            "a",
+            "b"
+          ],
+          "op": "br"
+        },
+        {
+          "label": "a"
+        },
+        {
+          "dest": 1,
+          "op": "const",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "labels": [
+            "end"
+          ],
+          "op": "jmp"
+        },
+        {
+          "label": "b"
+        },
+        {
+          "dest": 1,
+          "op": "const",
+          "type": "int",
+          "value": 4
+        },
+        {
+          "labels": [
+            "end"
+          ],
+          "op": "jmp"
+        },
+        {
+          "label": "end"
+        },
+        {
+          "args": [
+            1,
+            1
+          ],
+          "dest": 1,
+          "labels": [
+            "a",
+            "b"
+          ],
+          "op": "phi"
+        },
+        {
+          "args": [
+            1
+          ],
+          "op": "print"
+        }
+      ],
+      "name": "main"
+    }
+  ]
+}
