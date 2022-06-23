@@ -96,3 +96,14 @@ This is the program that broke my code:
 
 
 ```
+
+# Gigantic brain algorithm
+
+I used a dataflow analysis to figure out which nodes should have phi nodes.
+
+- Each variable is given its own map from labels -> which block it came from (or zero)
+- ID operation is just 
+
+
+
+I modified the graph a bit so that there is a dummy entry node into the entire CFG, and that every basic block needs to start with a header to make this work nicely with SSA.

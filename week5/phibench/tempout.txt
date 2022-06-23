@@ -1,0 +1,85 @@
+@abs(a: int): int {
+.ssa_dummy_block:
+.bbloc0:
+  zero.1: int = const 0;
+  is_neg.1: bool = lt a zero.1;
+  br is_neg.1 .mul_neg_one .abs_res;
+.mul_neg_one:
+  neg_one.1: int = const -1;
+  a.1: int = mul a neg_one.1;
+.abs_res:
+  ret a;
+}
+@mod(a: int, b: int): int {
+.ssa_dummy_block:
+.bbloc0:
+  q.1: int = div a b;
+  aq.1: int = mul b q.1;
+  mod.1: int = sub a aq.1;
+  ret mod.1;
+}
+@gcd(a: int, b: int): int {
+.ssa_dummy_block:
+.while.cond:
+  mod.1: int = call @mod a b;
+  zero.1: int = const 0;
+  is_term.1: bool = eq mod.1 zero.1;
+  br is_term.1 .while.finish .while.body;
+.while.body:
+  a.1: int = id b;
+  b.1: int = id mod.1;
+  jmp .while.cond;
+.while.finish:
+  ret b;
+}
+@lcm(a: int, b: int): int {
+.ssa_dummy_block:
+.bbloc0:
+  zero.1: int = const 0;
+  a_is_zero.1: bool = eq a zero.1;
+  br a_is_zero.1 .check_b .is_good;
+.check_b:
+  b_is_zero.1: bool = eq b zero.1;
+  br b_is_zero.1 .special_case .is_good;
+.special_case:
+  ret zero.1;
+.is_good:
+  ab.1: int = mul a b;
+  ab.2: int = call @abs ab.1;
+  gcdab.1: int = call @gcd a b;
+  lcm.1: int = div ab.2 gcdab.1;
+  ret lcm.1;
+}
+@orders(u: int, n: int, use_lcm: bool) {
+.ssa_dummy_block:
+.for.cond:
+  ordu.1 = phi ordu.0 ordu.2 .ssa_dummy_block .for.body.print;
+  is_term.1: bool = eq u n;
+  br is_term.1 .for.finish .for.body;
+.for.body:
+  br use_lcm .lcm .gcd;
+.lcm:
+  lcm.1: int = call @lcm u n;
+  ordu.2: int = div lcm.1 u;
+  jmp .for.body.print;
+.gcd:
+  gcdun.1: int = call @gcd u n;
+  ordu.2: int = div n gcdun.1;
+.for.body.print:
+  ordu.2 = phi ordu.2 ordu.2 .lcm .gcd;
+  print u ordu.2;
+  one.1: int = const 1;
+  u.1: int = add u one.1;
+  jmp .for.cond;
+.for.finish:
+  ret;
+}
+@main(n: int, use_lcm: bool) {
+.ssa_dummy_block:
+.bbloc0:
+  zero.1: int = const 0;
+  u.1: int = const 1;
+  n.1: int = call @abs n;
+  print zero.1 u.1;
+  call @orders u.1 n.1 use_lcm;
+}

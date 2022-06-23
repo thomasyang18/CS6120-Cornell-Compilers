@@ -10,42 +10,36 @@ from domlib import make_graph
 from worklist import worklist_algo
 
 import json
+import argparse
 
 
+DEBUG = False
 
-def id(arg):
-    ''
+def parse_args():
+    parser = argparse.ArgumentParser(description='Different Worklist Data Flow Variants')
 
-def merge(in_set, apply_set):
-    for arg in apply_set:
-        in_set[arg] = ''
+    parser.add_argument('-d', '--debug', 
+                    help='If true, don\'t dump json',    
+                    default='false', 
+                    type=str, 
+                    choices = ['true', 'false'])
 
-def transfer(instrs, in_set):
-    for instr in instrs:
-        if 'dest' in instr:
-            in_set[instr['dest']] = ''
+    return vars(parser.parse_args())
 
-    return in_set
 
 def to_ssa(func):
     dominators = find_dominators(func, False, False)
     tree = build_tree(dominators, False)
     frontier = build_frontier(func, tree, dominators, False)
-    name, args, blocks, succ, pred = make_graph(func)   
+    name, args, blocks, succ, pred = make_graph(func)  
+             
     
-    in_set, out_set = worklist_algo(func, id, merge, transfer)
-
     vars = set()
-
-    defs = {} # map of variables to list of blocks
 
     argnames = {}
     if 'args' in func:
         argnames = {arg['name'] for arg in func['args']}
     vars.update(argnames)
-
-    for var in vars:
-        defs[var] = []
 
     #blocks MUST start with labels
     bbloccnt = 0
@@ -60,34 +54,40 @@ def to_ssa(func):
         for instr in blocks[i]:
             if 'dest' in instr:
                 v= instr['dest']
-                vars.add(v)
-                defs[v] = []
-
-    #for i in range(0, len(blocks)):
-    #    for k in out_set[i]:
-    #        if i not in defs[k]:
-    #            defs[k].append(i)
-
-    for i in range(0, len(blocks)):
-        block = blocks[i]
+                vars.add(v) 
+    
+    func['instrs'] = [{"label":"ssa_dummy_block"}]
+    for block in blocks:
         for instr in block:
-            if 'dest' in instr:
-                v = instr['dest']
-                if i not in defs[v]:
-                    defs[v].append(i)   
+            func['instrs'].append(instr)    
+
+    in_set, out_set = worklist_algo(func)
+
+    dominators = find_dominators(func, False, False)
+    tree = build_tree(dominators, False)
+    frontier = build_frontier(func, tree, dominators, False)
+    name, args, blocks, succ, pred = make_graph(func) 
+
+    if name == 'gcd' and DEBUG:
+        print("preds")
+        for i in range(0, len(blocks)):
+            print(i,pred[i],in_set[i])
+        print("succ")
+        for i in range(0, len(blocks)):
+            print(i,succ[i],out_set[i])
+
+    defs = {}
 
     for v in vars:
-        i = 0
-        has_phi = set()
-        while i < len(defs[v]):
-            for block in frontier[defs[v][i]]:
-                has_phi.add(block)
+        defs[v] = []
+        for i in range(0, len(blocks)):
+            if v in in_set[i] and v in out_set[i] and len(in_set[i][v]) >= 2 and len(out_set[i][v]) == 1:
+                defs[v].append(i)
 
-                if block not in defs[v]:
-                    defs[v].append(block)
-            i+=1
-        for block in has_phi:
-            #inefficient to add 1 by 1 but whatever                
+    for v in vars:
+        for block in defs[v]:
+            #inefficient to add 1 by 1 but whatever  
+                      
             phi = {}
             phi['op'] = 'phi'
             phi['dest'] = v
@@ -99,7 +99,7 @@ def to_ssa(func):
                 phi['labels'].append(blocks[p][0]['label'])
             
             blocks[block] = [blocks[block][0], phi] + blocks[block][1:]
-
+            
     stack = {}
     for v in vars:
         stack[v] = [0]
@@ -150,6 +150,7 @@ def to_ssa(func):
         for b in tree[i]:
             rename(b)
 
+        #return # this means we do not pop off stack variables at the end
         for v in go_back:
             while stack[v][-1] != go_back[v]:
                 stack[v].pop()    
@@ -165,6 +166,10 @@ def to_ssa(func):
     
 
 if __name__ == "__main__":
+    args = parse_args()
+
+    DEBUG = args['debug'] == 'true'
+
     prog = json.load(sys.stdin)
 
     temp = []
@@ -175,5 +180,5 @@ if __name__ == "__main__":
         temp.append(func)
     
     prog['functions'] = temp
-
-    json.dump(prog, sys.stdout, indent=2)
+    if not DEBUG:
+        json.dump(prog, sys.stdout, indent=2)
