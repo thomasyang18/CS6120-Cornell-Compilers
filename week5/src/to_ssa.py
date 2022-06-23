@@ -68,26 +68,30 @@ def to_ssa(func):
     frontier = build_frontier(func, tree, dominators, False)
     name, args, blocks, succ, pred = make_graph(func) 
 
-    if name == 'gcd' and DEBUG:
+    if name == 'asd' and DEBUG:
         print("preds")
         for i in range(0, len(blocks)):
             print(i,pred[i],in_set[i])
         print("succ")
         for i in range(0, len(blocks)):
             print(i,succ[i],out_set[i])
+        
+        for i in range(0, len(blocks)):
+            print(i,tree[i])
 
     defs = {}
 
     for v in vars:
         defs[v] = []
         for i in range(0, len(blocks)):
-            if v in in_set[i] and v in out_set[i] and len(in_set[i][v]) >= 2 and len(out_set[i][v]) == 1:
-                defs[v].append(i)
+            if v in in_set[i] and v in out_set[i]:
+                if len(set(in_set[i][v].values())) >= 2 and len(set(out_set[i][v].values())) == 1:
+                    defs[v].append(i)
 
     for v in vars:
         for block in defs[v]:
             #inefficient to add 1 by 1 but whatever  
-                      
+
             phi = {}
             phi['op'] = 'phi'
             phi['dest'] = v
@@ -100,9 +104,12 @@ def to_ssa(func):
             
             blocks[block] = [blocks[block][0], phi] + blocks[block][1:]
             
+
     stack = {}
+    stacknext = {}
     for v in vars:
         stack[v] = [0]
+        stacknext[v] = 1
 
     # insert phi nodes before each block for each variable, assuming 
     # that the block has more th
@@ -128,7 +135,8 @@ def to_ssa(func):
                 instr['args'] = [get_new_name(v) for v in instr['args'] ] 
             if 'dest' in instr:
                 v = instr['dest']
-                stack[v].append(stack[v][-1]+1)
+                stack[v].append(stacknext[v])
+                stacknext[v]+=1
                 instr['dest'] = get_new_name(v)
             
         # this make the phi nodes read from w/e, will be a bit inefficient

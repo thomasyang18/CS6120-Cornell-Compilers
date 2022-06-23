@@ -1,2 +1,2 @@
-command = "bash -c 'bril2json < {filename} | python3 ../../../examples/to_ssa.py | python3 ../is_ssa.py'"
+command = "bash -c 'bril2json < {filename} | python3 ../src/to_ssa.py | python3 ../is_ssa.py'"
 

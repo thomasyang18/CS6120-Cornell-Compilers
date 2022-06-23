@@ -97,10 +97,18 @@ def transfer(instrs, in_set, i):
     for instr in instrs:
         if 'dest' in instr:
             in_set[instr['dest']] = {instrs[0]['label']: i}
-
+            
     for arg in in_set:
-        if len(in_set[arg]) > 1:
+        true_len = len(set(in_set[arg].values()))
+        if true_len > 1:
             in_set[arg] = {instrs[0]['label']: i}
+        elif true_len == 1:
+            # keep the var, but rename the label; that will be useful
+            # in future things
+            var= list(in_set[arg].values())[0]
+
+            in_set[arg] = {instrs[0]['label']:var}
+            #print("Yo wtf", arg, in_set[arg])
     return in_set
 
 

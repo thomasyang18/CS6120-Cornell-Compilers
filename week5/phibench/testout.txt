@@ -1,0 +1,50 @@
+@main(input: int) {
+.ssa_dummy_block:
+.bbloc0:
+  zero.1: int = const 0;
+  ten.1: int = const 10;
+  result.1: int = const 0;
+.begin:
+  print result.1;
+  result.2 = phi result.1 result.7 .bbloc0 .check_done;
+  input.1 = phi input input.2 .bbloc0 .check_done;
+  digit.1: int = call @peel_last_digit input.1;
+  input.2: int = div input.1 ten.1;
+  result.3: int = add result.2 digit.1;
+.check_result:
+  result.4 = phi result.3 result.7 .begin .process_result;
+  print result.4;
+  processed.1: bool = call @is_single_digit result.4;
+  br processed.1 .check_done .process_result;
+.process_result:
+  result.5 = phi result.4 .check_result;
+  r0.1: int = call @peel_last_digit result.5;
+  result.6: int = div result.5 ten.1;
+  result.7: int = add result.6 r0.1;
+  jmp .check_result;
+.check_done:
+  done.1: bool = eq input.2 zero.1;
+  print input.2;
+  br done.1 .done .begin;
+.done:
+  print result.7;
+}
+@is_single_digit(input: int): bool {
+.ssa_dummy_block:
+.bbloc0:
+  ten.1: int = const 10;
+  zero.1: int = const 0;
+  divided.1: int = div input ten.1;
+  mul_by_ten.1: int = mul divided.1 ten.1;
+  result.1: bool = eq mul_by_ten.1 zero.1;
+  ret result.1;
+}
+@peel_last_digit(input: int): int {
+.ssa_dummy_block:
+.bbloc0:
+  ten.1: int = const 10;
+  div_by_ten.1: int = div input ten.1;
+  mul_by_ten.1: int = mul div_by_ten.1 ten.1;
+  last_digit.1: int = sub input mul_by_ten.1;
+  ret last_digit.1;
+}

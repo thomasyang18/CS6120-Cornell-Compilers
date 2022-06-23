@@ -101,9 +101,19 @@ This is the program that broke my code:
 
 I used a dataflow analysis to figure out which nodes should have phi nodes.
 
-- Each variable is given its own map from labels -> which block it came from (or zero)
-- ID operation is just 
+- Each variable is given its own map from labels -> which block it came from (or zero). This lattice would then be some kind of powerset lattice, I think. Not exactly sure - the merge operation is kind of sus.
+- Id operation is just mapping entrance variables to dummy SSA block
+- Merge operation is a map merge, but in the case of key conflict, the applied map takes precedence over the original map, because you get the "latest" update. Tbh this part is kinda sus, but it seems legit and seems to work.
+- Update operation is a lattice that goes like this:
+  - If a variable is assigned within this basic block, it becomes the map {this label: this block}
+  - Otherwise, if a variable has 2+ map entries, it also becomes the map {this label: this block}
+  - Otherwise, it stays the same.
 
+  This is intuitively monotonic, because:
+  - Constant assignment is a monotonic operation
+  - If the map doesn't change, the map is the same, so constant
+  - Any set of 2+ size is monotonic since they all get mapped to the same element, and any set of size 1 can't be compared to any other set of size 1, and sets of size 0 are obvious. 
 
+  My logic for this part was that if you have multiple in-nodes, you want to phi it up, and thus your latest defined for that block will be that block. Otherwise, you want to just let the block pass through like normal (unless an assignment variable changes it).
 
 I modified the graph a bit so that there is a dummy entry node into the entire CFG, and that every basic block needs to start with a header to make this work nicely with SSA.
