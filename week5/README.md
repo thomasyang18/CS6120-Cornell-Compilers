@@ -117,3 +117,6 @@ I used a dataflow analysis to figure out which nodes should have phi nodes.
   My logic for this part was that if you have multiple in-nodes, you want to phi it up, and thus your latest defined for that block will be that block. Otherwise, you want to just let the block pass through like normal (unless an assignment variable changes it).
 
 I modified the graph a bit so that there is a dummy entry node into the entire CFG, and that every basic block needs to start with a header to make this work nicely with SSA.
+
+# Benchmarked improvements:
+In the dyn_instr_bench folder, there are two out programs: myprogram.out and their.out. Sometimes I barely got any speedup, while other times I got 25%-50% speedup for tens of thousands of instructions. So yeah, my program's OP!

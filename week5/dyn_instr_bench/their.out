@@ -1,0 +1,89 @@
+1..44
+total_dyn_inst: 1464232
+ok 1 - ackermann.bril
+total_dyn_inst: 91066
+ok 2 - adj2csr.bril
+total_dyn_inst: 11887
+ok 3 - adler32.bril
+total_dyn_inst: 194
+ok 4 - armstrong.bril
+total_dyn_inst: 145
+ok 5 - binary-fmt.bril
+total_dyn_inst: 85
+ok 6 - binary-search.bril
+total_dyn_inst: 2409
+ok 7 - bitwise-ops.bril
+total_dyn_inst: 361
+ok 8 - bubblesort.bril
+total_dyn_inst: 1023511
+ok 9 - catalan.bril
+total_dyn_inst: 16364
+ok 10 - check-primes.bril
+total_dyn_inst: 7730
+ok 11 - cholesky.bril
+total_dyn_inst: 259
+ok 12 - collatz.bril
+total_dyn_inst: 351
+ok 13 - digital-root.bril
+total_dyn_inst: 1845093
+ok 14 - eight-queens.bril
+total_dyn_inst: 880
+ok 15 - euclid.bril
+total_dyn_inst: 130
+ok 16 - factors.bril
+total_dyn_inst: 203
+ok 17 - fib.bril
+total_dyn_inst: 10410
+ok 18 - fizz-buzz.bril
+total_dyn_inst: 66310776
+ok 19 - function_call.bril
+total_dyn_inst: 78
+ok 20 - gcd.bril
+total_dyn_inst: 217
+ok 21 - loopfact.bril
+total_dyn_inst: 1281
+ok 22 - mat-inv.bril
+total_dyn_inst: 3504402
+ok 23 - mat-mul.bril
+total_dyn_inst: 272
+ok 24 - max-subarray.bril
+total_dyn_inst: 271
+ok 25 - newton.bril
+total_dyn_inst: 1223
+ok 26 - n_root.bril
+total_dyn_inst: 8532
+ok 27 - orders.bril
+total_dyn_inst: 281
+ok 28 - pascals-row.bril
+total_dyn_inst: 437
+ok 29 - perfect.bril
+total_dyn_inst: 65
+ok 30 - pow.bril
+total_dyn_inst: 879738
+ok 31 - primes-between.bril
+total_dyn_inst: 108277
+ok 32 - pythagorean_triple.bril
+total_dyn_inst: 1447
+ok 33 - quadratic.bril
+total_dyn_inst: 143
+ok 34 - ray-sphere-intersection.bril
+total_dyn_inst: 175
+ok 35 - recfact.bril
+total_dyn_inst: 18
+ok 36 - rectangles-area-difference.bril
+total_dyn_inst: 4188
+ok 37 - relative-primes.bril
+total_dyn_inst: 473
+ok 38 - riemann.bril
+total_dyn_inst: 5482
+ok 39 - sieve.bril
+total_dyn_inst: 666
+ok 40 - sqrt.bril
+total_dyn_inst: 102
+ok 41 - sum-bits.bril
+total_dyn_inst: 259
+ok 42 - sum-divisors.bril
+total_dyn_inst: 5667
+ok 43 - sum-sq-diff.bril
+total_dyn_inst: 483
+ok 44 - up-arrow.bril
