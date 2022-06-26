@@ -1,0 +1,4 @@
+@main(){
+  a: int = const 3;
+  a: int = id a;
+}

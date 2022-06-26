@@ -1,0 +1,16 @@
+@main(){
+.b0:
+  x: int = const false;
+  br x .b1 .b3;
+.b1:
+  x: int = const false;
+  jmp .b2;
+.b2:
+  x: int = const false;
+  jmp .b4;
+.b3:
+  x: int = const false;
+  jmp .b2;
+.b4:
+  print x;
+}

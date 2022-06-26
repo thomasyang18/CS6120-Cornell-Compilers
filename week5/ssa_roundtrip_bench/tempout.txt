@@ -1,0 +1,32 @@
+
+@matmul(size: int, arr1: ptr<float>, arr2: ptr<float>, dest: ptr<float>) {
+.ssa_dummy_block:
+.bbloc0:
+.row.loop:
+  br cond.2 .row.body .row.done;
+.row.body:
+  i.2: int = id i.1;
+.col.loop:
+.col.body:
+  i.3: int = const 0;
+  i.4: int = id i.3;
+.sum.loop:
+  br cond.6 .sum.body .sum.done;
+.sum.body:
+  lidx.3: int = add lidx.2 i.4;
+  ridx.2: int = mul i.4 size;
+.sum.loop_end:
+  i.5: int = add i.4 one.1;
+  i.4: int = id i.5;
+  jmp .sum.loop;
+.sum.done:
+.col.loop_end:
+  i.2: int = id i.4;
+  jmp .col.loop;
+.col.done:
+.row.loop_end:
+  i.1: int = id i.2;
+  jmp .row.loop;
+.row.done:
+  ret;
+}

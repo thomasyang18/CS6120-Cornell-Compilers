@@ -1,0 +1,28 @@
+
+@matmul(size: int, arr1: ptr<float>, arr2: ptr<float>, dest: ptr<float>) {
+.ssa_dummy_block:
+.bbloc0:
+.row.loop:
+  i.1: int = phi __undefined i.2 .bbloc0 .row.loop_end;
+  br cond.2 .row.body .row.done;
+.row.body:
+.col.loop:
+  i.2: int = phi i.1 i.4 .row.body .col.loop_end;
+.col.body:
+  i.3: int = const 0;
+.sum.loop:
+  i.4: int = phi i.3 i.5 .col.body .sum.loop_end;
+  br cond.6 .sum.body .sum.done;
+.sum.body:
+.sum.loop_end:
+  i.5: int = add i.4 one.1;
+  jmp .sum.loop;
+.sum.done:
+.col.loop_end:
+  jmp .col.loop;
+.col.done:
+.row.loop_end:
+  jmp .row.loop;
+.row.done:
+  ret;
+}

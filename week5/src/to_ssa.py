@@ -1,7 +1,5 @@
-from cProfile import label
-from operator import truediv
+from re import L
 import sys
-import os
 
 from domlib import find_dominators
 from domlib import build_frontier
@@ -37,14 +35,18 @@ def to_ssa(func):
     vars = set()
 
     argnames = {}
+    var_types = {} # var name to var type
+    
     if 'args' in func:
         argnames = {arg['name'] for arg in func['args']}
+        var_types = {arg['name']:arg['type'] for arg in func['args']}
     vars.update(argnames)
 
     #blocks MUST start with labels
     bbloccnt = 0
 
   #  print(name)
+    
 
     for i in range(0, len(blocks)):
         if 'label' not in blocks[i][0]:
@@ -60,6 +62,8 @@ def to_ssa(func):
     for block in blocks:
         for instr in block:
             func['instrs'].append(instr)    
+            if 'dest' in instr:
+                var_types[instr['dest']] = instr['type'] 
 
     in_set, out_set = worklist_algo(func)
 
@@ -85,7 +89,19 @@ def to_ssa(func):
         defs[v] = []
         for i in range(0, len(blocks)):
             if v in in_set[i] and v in out_set[i]:
-                if len(set(in_set[i][v].values())) >= 2 and len(set(out_set[i][v].values())) == 1:
+                in_set_len = len(set(in_set[i][v].values())) 
+                # if a label isn't defined, include that as "undef", e.g. add 1 to 
+                # set length
+                hasUndef = False
+                for p in pred[i]:
+                    if blocks[p][0]['label'] not in in_set[i][v]:
+                        #print("Block", i, "does not have", p,blocks[p][0]['label'], ":",in_set[i][v])
+                        hasUndef = True
+
+                # This single line adds like a billion instsr
+                if hasUndef:
+                    in_set_len += 1
+                if  in_set_len >= 2 and len(set(out_set[i][v].values())) == 1:
                     defs[v].append(i)
 
     for v in vars:
@@ -97,6 +113,7 @@ def to_ssa(func):
             phi['dest'] = v
             phi['args'] = []
             phi['labels'] = []
+            phi['type'] = var_types[v]
             #print("Yo ", v, block, pred[block])
             for p in pred[block]:
                 phi['args'].append(v)
@@ -114,10 +131,12 @@ def to_ssa(func):
     # insert phi nodes before each block for each variable, assuming 
     # that the block has more th
 
-    def get_new_name(v):
-        if v in argnames:
-            if stack[v][-1] == 0:
+    def get_new_name(v, doUndef = False):
+        if stack[v][-1] == 0:
+            if v in argnames: #already defined
                 return v
+            elif doUndef:
+                return "__undefined"
         return v + "." + str(stack[v][-1]) 
 
     def rename(i):
@@ -152,7 +171,7 @@ def to_ssa(func):
                     for j in range(0, len(instr['labels'])):
                         if instr['labels'][j] == my_label:
                             v = instr['args'][j]
-                            instr['args'][j] = get_new_name(v)
+                            instr['args'][j] = get_new_name(v, True)
                     
 
         for b in tree[i]:
