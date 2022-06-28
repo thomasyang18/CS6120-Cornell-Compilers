@@ -1,0 +1,104 @@
+main ()
+{
+  int j.0;
+  int j.1;
+  int D.2409;
+
+  {
+    int n;
+
+    try
+      {
+        .ASAN_MARK (UNPOISON, &n, 4);
+        scanf ("%d\n", &n);
+        {
+          int i;
+
+          i = 0;
+          goto <D.2401>;
+          <D.2400>:
+          {
+            int s;
+            char str[7];
+
+            try
+              {
+                s = 0;
+                .ASAN_MARK (UNPOISON, &str, 7);
+                scanf ("%s\n", &str);
+                {
+                  int j;
+
+                  j = 0;
+                  goto <D.2394>;
+                  <D.2393>:
+                  j.0 = j;
+                  .UBSAN_BOUNDS (0B, j.0, 6);
+                  _1 = str[j.0];
+                  _2 = (int) _1;
+                  s = s + _2;
+                  j = j + 1;
+                  <D.2394>:
+                  if (j <= 2) goto <D.2393>; else goto <D.2395>;
+                  <D.2395>:
+                }
+                {
+                  int j;
+
+                  j = 3;
+                  goto <D.2398>;
+                  <D.2397>:
+                  j.1 = j;
+                  .UBSAN_BOUNDS (0B, j.1, 6);
+                  _3 = str[j.1];
+                  _4 = (int) _3;
+                  s = s - _4;
+                  j = j + 1;
+                  <D.2398>:
+                  if (j <= 5) goto <D.2397>; else goto <D.2399>;
+                  <D.2399>:
+                }
+                if (s == 0) goto <D.2406>; else goto <D.2407>;
+                <D.2406>:
+                printf ("YES\n");
+                goto <D.2408>;
+                <D.2407>:
+                printf ("NO\n");
+                <D.2408>:
+              }
+            finally
+              {
+                .ASAN_MARK (POISON, &str, 7);
+              }
+          }
+          i = i + 1;
+          <D.2401>:
+          n.2_5 = n;
+          if (i < n.2_5) goto <D.2400>; else goto <D.2402>;
+          <D.2402>:
+        }
+      }
+    finally
+      {
+        .ASAN_MARK (POISON, &n, 4);
+      }
+  }
+  D.2409 = 0;
+  return D.2409;
+}
+
+
+_sub_D_00099_0 ()
+{
+  __builtin___asan_unregister_globals (&*.LASAN0, 23);
+}
+
+
+_sub_I_00099_1 ()
+{
+  __builtin___asan_init ();
+  __builtin___asan_version_mismatch_check_v8 ();
+  __builtin___asan_register_globals (&*.LASAN0, 23);
+}
+
+
