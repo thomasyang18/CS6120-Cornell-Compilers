@@ -53,10 +53,10 @@ RM = /home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton
+CMAKE_SOURCE_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week7
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build
+CMAKE_BINARY_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week7/build
 
 # Utility rule file for intrinsics_gen.
 
@@ -78,6 +78,6 @@ CMakeFiles/intrinsics_gen.dir/clean:
 .PHONY : CMakeFiles/intrinsics_gen.dir/clean
 
 CMakeFiles/intrinsics_gen.dir/depend:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build/CMakeFiles/intrinsics_gen.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/thomas/bril/CS6120-Cornell-Compilers/week7 /home/thomas/bril/CS6120-Cornell-Compilers/week7 /home/thomas/bril/CS6120-Cornell-Compilers/week7/build /home/thomas/bril/CS6120-Cornell-Compilers/week7/build /home/thomas/bril/CS6120-Cornell-Compilers/week7/build/CMakeFiles/intrinsics_gen.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/intrinsics_gen.dir/depend
 

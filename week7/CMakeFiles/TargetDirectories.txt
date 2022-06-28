@@ -1,0 +1,6 @@
+/home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles/intrinsics_gen.dir
+/home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles/edit_cache.dir
+/home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles/rebuild_cache.dir
+/home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton/CMakeFiles/SkeletonPass.dir
+/home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton/CMakeFiles/edit_cache.dir
+/home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton/CMakeFiles/rebuild_cache.dir

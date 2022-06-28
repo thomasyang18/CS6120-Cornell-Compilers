@@ -57,10 +57,10 @@ RM = /home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton
+CMAKE_SOURCE_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week7
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build
+CMAKE_BINARY_DIR = /home/thomas/bril/CS6120-Cornell-Compilers/week7/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,14 +87,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build/CMakeFiles /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build/skeleton//CMakeFiles/progress.marks
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build/CMakeFiles 0
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/thomas/bril/CS6120-Cornell-Compilers/week7/build/CMakeFiles /home/thomas/bril/CS6120-Cornell-Compilers/week7/build/skeleton//CMakeFiles/progress.marks
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/thomas/bril/CS6120-Cornell-Compilers/week7/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/clean
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/clean
 .PHONY : clean
 
 # The main clean target
@@ -103,22 +103,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/preinstall
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/preinstall
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 skeleton/CMakeFiles/SkeletonPass.dir/rule:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/CMakeFiles/SkeletonPass.dir/rule
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 skeleton/CMakeFiles/SkeletonPass.dir/rule
 .PHONY : skeleton/CMakeFiles/SkeletonPass.dir/rule
 
 # Convenience name for target.
@@ -127,7 +127,7 @@ SkeletonPass: skeleton/CMakeFiles/SkeletonPass.dir/rule
 
 # fast build rule for target.
 SkeletonPass/fast:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/build
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/build
 .PHONY : SkeletonPass/fast
 
 Skeleton.o: Skeleton.cpp.o
@@ -135,7 +135,7 @@ Skeleton.o: Skeleton.cpp.o
 
 # target to build an object file
 Skeleton.cpp.o:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.o
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.o
 .PHONY : Skeleton.cpp.o
 
 Skeleton.i: Skeleton.cpp.i
@@ -143,7 +143,7 @@ Skeleton.i: Skeleton.cpp.i
 
 # target to preprocess a source file
 Skeleton.cpp.i:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.i
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.i
 .PHONY : Skeleton.cpp.i
 
 Skeleton.s: Skeleton.cpp.s
@@ -151,7 +151,7 @@ Skeleton.s: Skeleton.cpp.s
 
 # target to generate assembly for a file
 Skeleton.cpp.s:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.s
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(MAKE) $(MAKESILENT) -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.s
 .PHONY : Skeleton.cpp.s
 
 # Help Target
@@ -177,6 +177,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/thomas/bril/CS6120-Cornell-Compilers/week6/llvm-pass-skeleton/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

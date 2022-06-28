@@ -1,0 +1,22 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+/home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -S/home/thomas/bril/CS6120-Cornell-Compilers/week7 -B/home/thomas/bril/CS6120-Cornell-Compilers/week7 --check-build-system CMakeFiles/Makefile.cmake 0
+/home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_progress_start /home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles /home/thomas/bril/CS6120-Cornell-Compilers/week7//CMakeFiles/progress.marks
+make -s -f CMakeFiles/Makefile2 all
+make[1]: Entering directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+make -s -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/depend
+make[2]: Entering directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+cd /home/thomas/bril/CS6120-Cornell-Compilers/week7 && /home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_depends "Unix Makefiles" /home/thomas/bril/CS6120-Cornell-Compilers/week7 /home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton /home/thomas/bril/CS6120-Cornell-Compilers/week7 /home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton /home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton/CMakeFiles/SkeletonPass.dir/DependInfo.cmake --color=
+make[2]: Leaving directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+make -s -f skeleton/CMakeFiles/SkeletonPass.dir/build.make skeleton/CMakeFiles/SkeletonPass.dir/build
+make[2]: Entering directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+/home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_echo_color --switch= --green --progress-dir=/home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles --progress-num=1 "Building CXX object skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.o"
+cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton && /usr/bin/c++ -DSkeletonPass_EXPORTS -I/usr/lib/llvm-10/include -fPIC   -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS -fno-rtti -std=gnu++14 -MD -MT skeleton/CMakeFiles/SkeletonPass.dir/Skeleton.cpp.o -MF CMakeFiles/SkeletonPass.dir/Skeleton.cpp.o.d -o CMakeFiles/SkeletonPass.dir/Skeleton.cpp.o -c /home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton/Skeleton.cpp
+/home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_echo_color --switch= --green --bold --progress-dir=/home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles --progress-num=2 "Linking CXX shared module libSkeletonPass.so"
+cd /home/thomas/bril/CS6120-Cornell-Compilers/week7/skeleton && /home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_link_script CMakeFiles/SkeletonPass.dir/link.txt --verbose=
+make[2]: Leaving directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+/home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_echo_color --switch= --progress-dir=/home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles --progress-num=1,2 "Built target SkeletonPass"
+make[1]: Leaving directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+/home/linuxbrew/.linuxbrew/Cellar/cmake/3.23.2/bin/cmake -E cmake_progress_start /home/thomas/bril/CS6120-Cornell-Compilers/week7/CMakeFiles 0
+make: Leaving directory '/home/thomas/bril/CS6120-Cornell-Compilers/week7'
+ 
