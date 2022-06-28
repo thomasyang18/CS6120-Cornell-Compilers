@@ -31,9 +31,10 @@ namespace {
 		Value *lhs = op->getOperand(0);
 		Value *rhs = op->getOperand(1);
 	
-		// if (isa<ConstantInt>(lhs)){
-		// 	errs() << "Lhs was a constant Int!" << '\n';
-		// }
+		if (isa<ConstantInt>(lhs)){
+		 	errs() << "Lhs was a constant Int!" << '\n';
+		}
+		else continue;
 		Value *newLHS = ConstantInt::get(Type::getInt64Ty(F.getContext()), rand());
 
 		Value *newOp = builder.CreateStore(newLHS, rhs);
