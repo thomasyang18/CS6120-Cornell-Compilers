@@ -1,0 +1,18 @@
+# ARGS: 10
+
+@main(n: int){
+  x: int = const 0;
+  two: int = const 2;
+  i: int = const 0;
+.b1:
+  cond: bool = lt i n;
+  br cond .b2 .end;
+.b2:
+  one: int = const 1;
+  i: int = add i one;
+  four: int = mul two two;
+  x: int = add x four;
+  jmp .b1;
+.end:
+  print x;
+}

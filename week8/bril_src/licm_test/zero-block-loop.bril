@@ -1,0 +1,9 @@
+
+
+@main(){
+.b0:
+  x: int = const false;
+  br x .b0 .b1;
+.b1:
+  print x;
+}

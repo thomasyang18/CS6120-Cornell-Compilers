@@ -1,0 +1,9 @@
+# ARGS: -1
+@main(n: int){
+.b0:
+  v1: int = const 3;
+  cond: bool = gt n v1;
+  br cond .b0 .b1;
+.b1:
+  print n; 
+}

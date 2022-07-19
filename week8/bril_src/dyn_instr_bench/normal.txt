@@ -1,0 +1,89 @@
+1..44
+total_dyn_inst: 1464231
+ok 1 - ackermann.bril
+total_dyn_inst: 56629
+ok 2 - adj2csr.bril
+total_dyn_inst: 6851
+ok 3 - adler32.bril
+total_dyn_inst: 133
+ok 4 - armstrong.bril
+total_dyn_inst: 100
+ok 5 - binary-fmt.bril
+total_dyn_inst: 78
+ok 6 - binary-search.bril
+total_dyn_inst: 1690
+ok 7 - bitwise-ops.bril
+total_dyn_inst: 253
+ok 8 - bubblesort.bril
+total_dyn_inst: 659378
+ok 9 - catalan.bril
+total_dyn_inst: 8468
+ok 10 - check-primes.bril
+total_dyn_inst: 3761
+ok 11 - cholesky.bril
+total_dyn_inst: 169
+ok 12 - collatz.bril
+total_dyn_inst: 247
+ok 13 - digital-root.bril
+total_dyn_inst: 1006454
+ok 14 - eight-queens.bril
+total_dyn_inst: 563
+ok 15 - euclid.bril
+total_dyn_inst: 72
+ok 16 - factors.bril
+total_dyn_inst: 121
+ok 17 - fib.bril
+total_dyn_inst: 3652
+ok 18 - fizz-buzz.bril
+total_dyn_inst: 48607906
+ok 19 - function_call.bril
+total_dyn_inst: 46
+ok 20 - gcd.bril
+total_dyn_inst: 116
+ok 21 - loopfact.bril
+total_dyn_inst: 1044
+ok 22 - mat-inv.bril
+total_dyn_inst: 1990407
+ok 23 - mat-mul.bril
+total_dyn_inst: 193
+ok 24 - max-subarray.bril
+total_dyn_inst: 217
+ok 25 - newton.bril
+total_dyn_inst: 733
+ok 26 - n_root.bril
+total_dyn_inst: 5352
+ok 27 - orders.bril
+total_dyn_inst: 146
+ok 28 - pascals-row.bril
+total_dyn_inst: 232
+ok 29 - perfect.bril
+total_dyn_inst: 36
+ok 30 - pow.bril
+total_dyn_inst: 574100
+ok 31 - primes-between.bril
+total_dyn_inst: 61518
+ok 32 - pythagorean_triple.bril
+total_dyn_inst: 785
+ok 33 - quadratic.bril
+total_dyn_inst: 142
+ok 34 - ray-sphere-intersection.bril
+total_dyn_inst: 104
+ok 35 - recfact.bril
+total_dyn_inst: 14
+ok 36 - rectangles-area-difference.bril
+total_dyn_inst: 1923
+ok 37 - relative-primes.bril
+total_dyn_inst: 298
+ok 38 - riemann.bril
+total_dyn_inst: 3482
+ok 39 - sieve.bril
+total_dyn_inst: 322
+ok 40 - sqrt.bril
+total_dyn_inst: 73
+ok 41 - sum-bits.bril
+total_dyn_inst: 159
+ok 42 - sum-divisors.bril
+total_dyn_inst: 3038
+ok 43 - sum-sq-diff.bril
+total_dyn_inst: 252
+ok 44 - up-arrow.bril
