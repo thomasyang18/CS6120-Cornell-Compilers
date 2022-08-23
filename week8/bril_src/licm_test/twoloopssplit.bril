@@ -1,0 +1,15 @@
+@main(x: bool){
+.b0:
+  br x .b2 .b3;
+.b2:
+  one: int = const 1;
+  jmp .b1;
+.b1:
+  br x .b0 .b5;
+.b3:
+  jmp .b4;
+.b4:
+  br x .b0 .b5;
+.b5:
+  print x;
+}

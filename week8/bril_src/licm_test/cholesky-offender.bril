@@ -1,0 +1,72 @@
+
+# Cholesky decomposition
+@cholesky(size: int, arr1: ptr<float>, arr2: ptr<float>) {
+  one: int = const 1;
+  i: int = const 0;
+.i.loop:
+  condi: bool = lt i size;
+  br condi .i.body .i.done;
+.i.body:
+  j: int = const 0;
+.j.loop:
+  condj: bool = le j i;
+  br condj .j.body .j.done;
+.j.body:
+  k: int = const 0;
+.k.loop:
+  condk: bool = lt k j;
+  br condk .k.body .k.done;
+.k.body:
+  # prepare indices
+  ik_index: int = mul i size;
+  ik_index: int = add ik_index k;
+  jk_index: int = mul j size;
+  jk_index: int = add jk_index k;
+  ij_index: int = mul i size;
+  ij_index: int = add ij_index j;
+  # load values
+  ik_ptr: ptr<float> = ptradd arr2 ik_index;
+  b_ik: float = load ik_ptr;
+  jk_ptr: ptr<float> = ptradd arr2 jk_index;
+  b_jk: float = load jk_ptr;
+  ij_ptr: ptr<float> = ptradd arr1 ij_index;
+  a_ij: float = load ij_ptr;
+  value: float = fmul b_ik b_jk;
+  value: float = fsub a_ij value;
+  store ij_ptr value;
+.k.loop_end:
+  k: int = add k one;
+  jmp .k.loop;
+.k.done:
+  # j loop body continues
+  ij_index: int = mul i size;
+  ij_index: int = add ij_index j;
+  jj_index: int = mul j size;
+  jj_index: int = add jj_index j;
+  a_ij_ptr: ptr<float> = ptradd arr1 ij_index;
+  b_ij_ptr: ptr<float> = ptradd arr2 ij_index;
+  jj_ptr: ptr<float> = ptradd arr2 jj_index;
+  a_ij: float = load a_ij_ptr;
+  b_ij: float = load b_ij_ptr;
+  b_jj: float = load jj_ptr;
+  value: float = fdiv a_ij b_jj;
+  store b_ij_ptr value;
+.j.loop_end:
+  j: int = add j one;
+  jmp .j.loop;
+.j.done:
+  # i loop body continues;
+  ii_index: int = mul i size;
+  ii_index: int = add ii_index i;
+  a_ii_ptr: ptr<float> = ptradd arr1 ii_index;
+  b_ii_ptr: ptr<float> = ptradd arr2 ii_index;
+  value: float = load a_ii_ptr;
+  sqrt_value : float = call @sqrt value;
+  store b_ii_ptr sqrt_value;
+.i.loop_end:
+  i: int = add i one;
+  jmp .i.loop;
+.i.done:
+  print one;
+  ret;
+}

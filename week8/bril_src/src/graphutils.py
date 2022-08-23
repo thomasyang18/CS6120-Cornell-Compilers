@@ -1,5 +1,18 @@
 TERMINATORS = 'jmp', 'br', 'ret'
 
+def find_natural_loops(succ, pred):
+    # for every backedge in the graph, assume that the header is a natural loop and do some shenanigans that way
+    pass
+
+def to_graph_viz(succ):
+    print("digraph main")
+    print("{")
+    for i in range(0,len(succ)):
+        for v in succ[i]:
+            print(i,"->",v,";")
+    print("}")
+
+
 def post_order(vis, graph, v, list):
     if v in vis:
         return
